@@ -1,0 +1,73 @@
+﻿<Page x:Class="Darts.UI.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Darts.UI"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewGeneric="using:Darts.UI.View.Generic"
+      mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="wideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="Inline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="narrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        <Border x:Name="MenuBorder"
+                Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <ToggleButton Click="Button_Click"
+                          VerticalAlignment="Top"
+                          Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
+                <FontIcon x:Name="Hamburger"
+                          FontFamily="Segoe MDL2 Assets"
+                          Glyph="&#xE700;"
+                          Margin="0,10,0,0" />
+            </ToggleButton>
+        </Border>
+        
+        <SplitView x:Name="Splitter" Grid.Column="1">
+            <SplitView.Pane>
+                <RelativePanel Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+                    <ListBox ItemsSource="{x:Bind Pages}"
+                             SelectedItem="{x:Bind CurrentPage, Mode=OneWay}"
+                             SelectionChanged="ScenarioControl_SelectionChanged"
+                             SelectionMode="Single"
+                             HorizontalAlignment="Left"
+                             Style="{StaticResource SideMenuListBoxStyle}"
+                             VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="viewGeneric:PageDescriptor">
+                                <TextBlock Text="{Binding LocalizedTitle}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </RelativePanel>
+            </SplitView.Pane>
+            <RelativePanel Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+                <Frame x:Name="NavigationFrame"
+                       Margin="0,5,0,0"
+                       RelativePanel.AlignTopWithPanel="True" />
+            </RelativePanel>
+        </SplitView>
+    </Grid>
+</Page>
